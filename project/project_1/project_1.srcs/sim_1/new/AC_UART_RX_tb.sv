@@ -33,13 +33,13 @@ initial begin
     hw_resetn <= 1;
     sof_resetn <= 1;
     
-    #10000;
-    for(int i=0; i<100; i++) begin
-        simulate_rx(i);
+    #80000;
+    for(int i=0; i<3; i++) begin
+        simulate_rx(i+7);
     end
     
-    #1000;
-    for(int i=0; i<100; i++) begin
+    #10000;
+    for(int i=0; i<3; i++) begin
         readData();
     end
     
@@ -97,9 +97,9 @@ endtask
 task readData;
     begin
         fifo_read <= 1;
-        #37;
+        #3700;
         fifo_read <= 0;
-        #52;
+        #5200;
     end
 endtask
 

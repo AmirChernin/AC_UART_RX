@@ -43,9 +43,14 @@ initial begin
         readData();
     end
     
-    
-    
 end
+
+//initial begin
+//    #370000;
+//    sof_resetn <= 0;
+//    #370;
+//    sof_resetn <= 1;
+//end
 
 
 AC_UART_RX

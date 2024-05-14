@@ -42,9 +42,6 @@ reg                 fifo_wr_en =0;
 
 reg                 fifo_read_d=0;
 reg                 fifo_rd_en =0;
-
-reg  [2:0]          fifo_delay =0;
-
  
 typedef enum logic [2:0] {
     IDLE,
@@ -52,7 +49,7 @@ typedef enum logic [2:0] {
     DATA,
     STOP
 } rx_state_t;
-rx_state_t rx_state = IDLE;
+rx_state_t rx_state = IDLE; 
 
 always_comb begin
     system_resetn <= hw_resetn && sof_resetn;
@@ -60,14 +57,21 @@ end
 
 always @(posedge clk or negedge system_resetn) begin
     if(!system_resetn) begin
-    
+        uart_busy <= 1;
+        BR_divider <= 0;
+        current_uart_data <= 0;
+        index <= 0;
+        fifo_din <= 0;
+        fifo_wr_en <= 0;
+        fifo_read_d <= 0;
+        fifo_rd_en <= 0;
+        rx_state <= IDLE;
     end else begin
         fifo_wr_en <= 0;
         fifo_rd_en <= 0;
         fifo_read_d <= fifo_read;
         
         if(!fifo_read_d && fifo_read && !fifo_empty) fifo_rd_en <= 1;
-         
         
         BR_divider <= BR_divider+1;
         if(BR_divider == BR_divider_max) BR_divider <= 0;
@@ -138,5 +142,39 @@ xFIFO
     .wr_data_count(),
     .rd_data_count(fifo_data_count)
 ); 
+
+
+AC_UART_RX_ILA AC_UART_RX_ILA (
+    .clk,
+    
+    
+    .probe0({
+//----------INPUTS-----------//	   
+        hw_resetn,
+        sof_resetn,
+        
+        fifo_dout,
+        fifo_read, 
+        
+        fifo_full,
+        fifo_empty,
+        fifo_data_count,
+        
+        uart_busy,
+        rx,
+       
+//----------REGISTERS-----------//	   
+        current_uart_data,
+        index,
+        fifo_din,
+        fifo_wr_en,
+        fifo_read_d,
+        fifo_rd_en,
+        rx_state,
+        BR_divider
+	}) 
+);
+
+
  
 endmodule

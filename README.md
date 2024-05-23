@@ -11,7 +11,6 @@ Developed by Amir Chernin (AC), the AC_UART_RX IP complements the AC_UART_TX IP 
 - **Configurable UART Baud Rate:** Supports up to 5 MHz.
 - **Variable Word Length:** Adjustable from 1 to 32 bits.
 - **Adjustable Buffer Size:** Allows customization of the FIFO buffer size.
-- **Word Delay:** Adds inter-word delays in microseconds to aid in receiver data synchronization.
 
 ## Technical Implementation
 
